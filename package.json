@@ -1,0 +1,50 @@
+{
+  "name": "vuepress-plugin-code-doc",
+  "version": "0.0.1",
+  "description": " Writing Documents Like Element-ui",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test jest",
+    "docs": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jardenliu/vuepress-plugin-code-doc.git"
+  },
+  "keywords": [
+    "vuepress",
+    "code",
+    "demo",
+    "doc",
+    "element",
+    "ui",
+    "components"
+  ],
+  "author": "jardenliu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jardenliu/vuepress-plugin-code-doc/issues"
+  },
+  "homepage": "https://github.com/jardenliu/vuepress-plugin-code-doc#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "cross-env": "^5.2.0",
+    "husky": "^3.0.1",
+    "jest": "^24.8.0",
+    "jest-serializer-vue": "^2.0.2",
+    "jest-transform-stub": "^2.0.0",
+    "vue-jest": "^3.0.4",
+    "vuepress": "^1.0.2"
+  },
+  "dependencies": {
+    "markdown-it-container": "^2.0.0"
+  }
+}
