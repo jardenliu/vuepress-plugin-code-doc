@@ -5,8 +5,8 @@ const components = {
 }
 
 const install = Vue => {
-    for (let key in components) {
-        vue.component(key, components[key])
+    for (const key in components) {
+        Vue.component(key, components[key])
     }
 }
 
