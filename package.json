@@ -66,6 +66,7 @@
         "vuepress": "^1.0.2"
     },
     "dependencies": {
+        "highlight.js": "^9.15.8",
         "markdown-it-container": "^2.0.0"
     }
 }
