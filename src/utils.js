@@ -13,8 +13,8 @@ const filterHTMLTokenFromTokens = (blockMap, tokens) => {
 }
 
 const getHighlightCode = (str, lang = 'vue') => {
-    const code = highlight.highlightAuto(str)
-    return `<pre><code class="html xml hljs ${lang}">${code.value}</code></pre>`
+    const code = highlight.highlightAuto(str, ['xml'])
+    return `<pre><code class="html xml hljs ">${code.value}</code></pre>`
 }
 
 module.exports = {
