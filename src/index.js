@@ -3,7 +3,7 @@ const mdIt = require('markdown-it')
 const mdItContainer = require('markdown-it-container')
 const { filterHTMLTokenFromTokens, getHighlightCode } = require('./utils')
 
-const getRender = (md, options, ctx) => {
+const getRender = (md, options = {}, ctx) => {
     return (tokens, idx) => {
         const { nesting, info = '', map } = tokens[idx]
 
@@ -31,7 +31,8 @@ const getRender = (md, options, ctx) => {
         })
 
         return `<code-block
-                    description="${description}"
+                    description="${description || ''}"
+                    scrollViewSelector="${options.scrollViewSelector || 'html'}"
                 >
                     <span slot="description">${descTemplate}</span>
                     <template slot="code">

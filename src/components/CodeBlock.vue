@@ -10,7 +10,7 @@
         </div>
 
         <div class="code-block__meta">
-            <div class="code-block__description">
+            <div class="code-block__description" v-if="description.trim()">
                 <slot name="description"></slot>
             </div>
             <div class="code-block__inner-code highlight">
@@ -18,7 +18,12 @@
             </div>
         </div>
 
-        <div class="code-block__control" @click="isExpanded = !isExpanded">
+        <div
+            class="code-block__control"
+            :class="[isFixContorl ? 'is-fixed' : '']"
+            ref="control"
+            @click="isExpanded = !isExpanded"
+        >
             <i
                 class="element-iconfont el-icon-down"
                 :class="{ 'is-hover': isHover, 'is-flip': isExpanded }"
@@ -34,17 +39,24 @@
 
 <script>
 import 'highlight.js/styles/color-brewer.css'
+import { setTimeout } from 'timers'
 export default {
     data () {
         return {
             isHover: false,
-            isExpanded: false
+            isExpanded: false,
+            scrollView: null,
+            isFixContorl: false
         }
     },
     props: {
         description: {
             type: String,
             default: ''
+        },
+        scrollViewSelector: {
+            type: String,
+            default: 'html'
         }
     },
     computed: {
@@ -74,13 +86,45 @@ export default {
                     foundDescs[0].clientHeight + foundCodes[0].clientHeight + 20
                 )
             }
-            return foundCodes[0].clientHeight
+            return foundCodes[0].clientHeight + 20
         }
     },
     watch: {
         isExpanded (val) {
             this.codeArea.style.height = val
                 ? `${this.codeAreaHeight + 1}px`
+                : '0'
+            this.$nextTick(() => {
+                setTimeout(() => this.handleScroll(), 300)
+            })
+        }
+    },
+    mounted () {
+        this.scrollView = document.querySelector(this.scrollViewSelector)
+        if (this.scrollView && this.scrollView === document.firstElementChild) {
+            this.scrollView = window
+        }
+        if (this.scrollView) {
+            this.scrollView.addEventListener('scroll', this.handleScroll)
+        }
+    },
+    beforeDestroy () {
+        this.scrollView &&
+            this.scrollView.removeEventListener('scroll', this.handleScroll)
+    },
+    methods: {
+        handleScroll () {
+            const rect = this.codeArea
+                ? this.codeArea.getBoundingClientRect()
+                : {}
+            const { top, bottom, left } = rect
+
+            this.isFixContorl =
+                bottom + 44 > document.documentElement.clientHeight &&
+                top <= document.documentElement.clientHeight
+
+            this.$refs.control.style.left = this.isFixContorl
+                ? `${left}px`
                 : '0'
         }
     }
@@ -90,7 +134,9 @@ export default {
 <style lang="stylus" scoped>
 .code-block
     border 1px solid #ebebeb
+    position relative
     border-radius 3px
+    padding-bottom 44px
     transition all 0.2s
     &.hover
         box-shadow 0 0 8px 0 rgba(232, 237, 250, 0.6), 0 2px 4px 0 rgba(232, 237, 250, 0.5)
@@ -147,8 +193,13 @@ export default {
     margin-top -1px
     color #d3dce6
     cursor pointer
-    position relative
+    position absolute
+    width 100%
     user-select none
+    &.is-fixed
+        position fixed
+        bottom 0
+        width 738px
     &:hover
         color #409eff
         background-color #f9fafc
