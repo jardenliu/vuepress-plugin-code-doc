@@ -29,9 +29,9 @@
                 :class="{ 'is-hover': isHover, 'is-flip': isExpanded }"
             ></i>
             <transition name="text-slide" appear>
-                <span v-if="isHover" :class="{ 'is-hover': isHover }">{{
-                    controlText
-                }}</span>
+                <span v-if="isHover" :class="{ 'is-hover': isHover }">
+                    {{ controlText }}
+                </span>
             </transition>
         </div>
     </div>
@@ -106,18 +106,20 @@ export default {
         }
         if (this.scrollView) {
             this.scrollView.addEventListener('scroll', this.handleScroll)
+            window.addEventListener('resize', this.handleScroll)
         }
     },
     beforeDestroy () {
         this.scrollView &&
             this.scrollView.removeEventListener('scroll', this.handleScroll)
+        window.removeEventListener('resize', this.handleScroll)
     },
     methods: {
         handleScroll () {
             const rect = this.codeArea
                 ? this.codeArea.getBoundingClientRect()
                 : {}
-            const { top, bottom, left } = rect
+            const { top, bottom, left, width } = rect
 
             this.isFixContorl =
                 bottom + 44 > document.documentElement.clientHeight &&
@@ -126,6 +128,10 @@ export default {
             this.$refs.control.style.left = this.isFixContorl
                 ? `${left}px`
                 : '0'
+
+            this.$refs.control.style.width = this.isFixContorl
+                ? `${width}px`
+                : ''
         }
     }
 }
@@ -199,7 +205,6 @@ export default {
     &.is-fixed
         position fixed
         bottom 0
-        width 738px
     &:hover
         color #409eff
         background-color #f9fafc
@@ -227,13 +232,13 @@ export default {
 
 <style>
 @font-face {
-    font-family: "element-iconfont";
-    src: url("data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAKkAAsAAAAABowAAAJXAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCcAo4UQE2AiQDCAsGAAQgBYVNBy4b1QUR1Yshsj9gDMYwrUcCnI7GvSOWlTdfpn93ziBgOHgAFaiABAAAAAAIqhrLnrsNASgGySRZmAiJWD5KRUVFAylgoVLv+8xlejcCOxlhivLUiBTrwk/L6UszEtIseeYq2yeL+Z1TbisMUoglPxify6s84ADoL8VNU03RlX7P57mc3gqjgD8INbetOYDuxQEtoD0wiqyEMm4Yu0EFLT2GgHCyqUQ9t89vtIcRrRKgtbbOaa/nxDAjEooIBhw0tE8QoW7DBeyV39cXVQoFR5AnyhmUm4rO/4tj2EBncwIXCOV4EOCBSsBAo8BgP62RwfOEB7fIh21lCl7bciPaqg4Zf12UHglApsy/JkEqvNSIA7gsPmF/LNProMiF0y8Sq2OT5bSXLv5SP9fPyrA1HfLPfD26KQAEV7iLfagMgFu/1BqemQid2SR4CQLCHvNFkcGZKwCyHZErrwgnHAio1nieWNVJe4yKWJIYzCEUtfDEUkkapwVBRNCLYGKZQDgVLB6PIIFDjywMKOdSgsjlBo5o/uDJ5Z8wrrIQRLJaEUyuRhDOeNCFERTrOjyoIXdUXPxxW+okyQo/wIARk4eDcV9Qfw25TTV0PvkBW1qdOI2S6cgdJtgSe5bvOnMXFtORb7k8MyjPph1Kjxr3eRPHAnpTVOpIB3RlyB0VF3/cljpJPt8PCANG9AeHyHkvqL+GXFgbhG2hij9gS+vPjtMoYZDfAYfDjnLd8l1n7sJiarD5djPJg/IMnteh9Khh8M+bOB4kpPJoeeX4N0YgOqBIswriQs9WpT8TEQAAAA==")
-        format("woff2");
+    font-family: 'element-iconfont';
+    src: url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAKkAAsAAAAABowAAAJXAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCcAo4UQE2AiQDCAsGAAQgBYVNBy4b1QUR1Yshsj9gDMYwrUcCnI7GvSOWlTdfpn93ziBgOHgAFaiABAAAAAAIqhrLnrsNASgGySRZmAiJWD5KRUVFAylgoVLv+8xlejcCOxlhivLUiBTrwk/L6UszEtIseeYq2yeL+Z1TbisMUoglPxify6s84ADoL8VNU03RlX7P57mc3gqjgD8INbetOYDuxQEtoD0wiqyEMm4Yu0EFLT2GgHCyqUQ9t89vtIcRrRKgtbbOaa/nxDAjEooIBhw0tE8QoW7DBeyV39cXVQoFR5AnyhmUm4rO/4tj2EBncwIXCOV4EOCBSsBAo8BgP62RwfOEB7fIh21lCl7bciPaqg4Zf12UHglApsy/JkEqvNSIA7gsPmF/LNProMiF0y8Sq2OT5bSXLv5SP9fPyrA1HfLPfD26KQAEV7iLfagMgFu/1BqemQid2SR4CQLCHvNFkcGZKwCyHZErrwgnHAio1nieWNVJe4yKWJIYzCEUtfDEUkkapwVBRNCLYGKZQDgVLB6PIIFDjywMKOdSgsjlBo5o/uDJ5Z8wrrIQRLJaEUyuRhDOeNCFERTrOjyoIXdUXPxxW+okyQo/wIARk4eDcV9Qfw25TTV0PvkBW1qdOI2S6cgdJtgSe5bvOnMXFtORb7k8MyjPph1Kjxr3eRPHAnpTVOpIB3RlyB0VF3/cljpJPt8PCANG9AeHyHkvqL+GXFgbhG2hij9gS+vPjtMoYZDfAYfDjnLd8l1n7sJiarD5djPJg/IMnteh9Khh8M+bOB4kpPJoeeX4N0YgOqBIswriQs9WpT8TEQAAAA==')
+        format('woff2');
 }
 
 .element-iconfont {
-    font-family: "element-iconfont" !important;
+    font-family: 'element-iconfont' !important;
     font-size: 16px;
     font-style: normal;
     -webkit-font-smoothing: antialiased;
@@ -241,6 +246,6 @@ export default {
 }
 
 .el-icon-down:before {
-    content: "\e6e9";
+    content: '\e6e9';
 }
 </style>
