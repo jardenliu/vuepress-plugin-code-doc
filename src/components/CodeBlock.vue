@@ -1,16 +1,15 @@
 <template>
-    <div
-        class="code-block"
+    <div class="code-block"
         :class="[isHover ? 'hover' : '']"
         @mouseenter="isHover = true"
-        @mouseleave="isHover = false"
-    >
+        @mouseleave="isHover = false">
         <div class="code-block__source">
             <slot></slot>
         </div>
 
         <div class="code-block__meta">
-            <div class="code-block__description" v-if="description.trim()">
+            <div class="code-block__description"
+                v-if="description.trim()">
                 <slot name="description"></slot>
             </div>
             <div class="code-block__inner-code highlight">
@@ -18,18 +17,16 @@
             </div>
         </div>
 
-        <div
-            class="code-block__control"
+        <div class="code-block__control"
             :class="[isFixContorl ? 'is-fixed' : '']"
             ref="control"
-            @click="isExpanded = !isExpanded"
-        >
-            <i
-                class="element-iconfont el-icon-down"
-                :class="{ 'is-hover': isHover, 'is-flip': isExpanded }"
-            ></i>
-            <transition name="text-slide" appear>
-                <span v-if="isHover" :class="{ 'is-hover': isHover }">
+            @click="isExpanded = !isExpanded">
+            <i class="element-iconfont el-icon-down"
+                :class="{ 'is-hover': isHover, 'is-flip': isExpanded }"></i>
+            <transition name="text-slide"
+                appear>
+                <span v-if="isHover"
+                    :class="{ 'is-hover': isHover }">
                     {{ controlText }}
                 </span>
             </transition>
@@ -41,7 +38,7 @@
 import 'highlight.js/styles/color-brewer.css'
 import { setTimeout } from 'timers'
 export default {
-    data () {
+    data() {
         return {
             isHover: false,
             isExpanded: false,
@@ -60,21 +57,21 @@ export default {
         }
     },
     computed: {
-        langConfig () {
+        langConfig() {
             return {
                 hideText: '隐藏代码',
                 showText: '显示代码'
             }
         },
-        controlText () {
+        controlText() {
             return this.isExpanded
                 ? this.langConfig.hideText
                 : this.langConfig.showText
         },
-        codeArea () {
+        codeArea() {
             return this.$el.getElementsByClassName('code-block__meta')[0]
         },
-        codeAreaHeight () {
+        codeAreaHeight() {
             const foundDescs = this.$el.getElementsByClassName(
                 'code-block__description'
             )
@@ -90,7 +87,7 @@ export default {
         }
     },
     watch: {
-        isExpanded (val) {
+        isExpanded(val) {
             this.codeArea.style.height = val
                 ? `${this.codeAreaHeight + 1}px`
                 : '0'
@@ -99,7 +96,7 @@ export default {
             })
         }
     },
-    mounted () {
+    mounted() {
         this.scrollView = document.querySelector(this.scrollViewSelector)
         if (this.scrollView && this.scrollView === document.firstElementChild) {
             this.scrollView = window
@@ -109,13 +106,13 @@ export default {
             window.addEventListener('resize', this.handleScroll)
         }
     },
-    beforeDestroy () {
+    beforeDestroy() {
         this.scrollView &&
             this.scrollView.removeEventListener('scroll', this.handleScroll)
         window.removeEventListener('resize', this.handleScroll)
     },
     methods: {
-        handleScroll () {
+        handleScroll() {
             const rect = this.codeArea
                 ? this.codeArea.getBoundingClientRect()
                 : {}

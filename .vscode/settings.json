@@ -1,0 +1,28 @@
+{
+    "vetur.format.defaultFormatter.html": "js-beautify-html",
+    "prettier.singleQuote": true,
+    "prettier.semi": false,
+    "languageStylus.useSeparator": false,
+    "stylusSupremacy.insertColons": false,
+    "stylusSupremacy.insertSemicolons": false,
+    "stylusSupremacy.insertBraces": false,
+    "stylusSupremacy.insertNewLineAroundImports": false,
+    "stylusSupremacy.insertNewLineAroundBlocks": "root",
+    "vetur.format.options.tabSize": 4,
+    "vetur.format.defaultFormatterOptions": {
+        "prettier": {
+            "singleQuote": false,
+            "semi": false,
+            "tabWidth": 4
+        },
+        "js-beautify-html": {
+            "wrap_attributes": "force"
+        },
+        "prettyhtml": {
+            "printWidth": 100,
+            "singleQuote": false,
+            "wrapAttributes": false,
+            "sortAttributes": false
+        }
+    },
+}
