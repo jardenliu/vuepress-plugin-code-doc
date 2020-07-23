@@ -1,6 +1,6 @@
 {
     "name": "vuepress-plugin-code-doc",
-    "version": "0.0.1-alpha",
+    "version": "0.0.1",
     "description": " Writing Documents Like Element-ui",
     "main": "src/index.js",
     "scripts": {
